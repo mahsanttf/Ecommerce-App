@@ -1,0 +1,24 @@
+{% extends "home.html" %}
+{% block content %}
+
+    <h1 class="text-center my-5">Brands</h1>
+
+    {% if brand_list %}
+        <div class="container">
+            <div class="row">
+                {% for brands in brand_list %}
+                    <div class="col-3">
+                        <div class="card bg-transparent border-success my-3">
+                            <div class="card-body text-center">
+                                {{ brands.name }}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% else %}
+        <p class="text-center">No Brands are available.</p>
+    {% endif %}
+
+{% endblock content %}

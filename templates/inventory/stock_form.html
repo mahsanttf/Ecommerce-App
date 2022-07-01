@@ -1,0 +1,13 @@
+{% extends "home.html" %}
+{% load crispy_forms_filters %}
+{% block content %}
+
+
+    <h1 class="text-center my-3">Add Stock</h1>
+<form class="mx-5" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input type="submit" value="Add">
+</form>
+
+{% endblock content %}

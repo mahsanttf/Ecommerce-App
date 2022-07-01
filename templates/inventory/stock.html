@@ -1,0 +1,42 @@
+{% extends "home.html" %}
+{% block content %}
+
+    <h1 class="text-center my-5">Stock History</h1>
+
+    {% if stock_list %}
+        <div class="container">
+            <div class="card bg-transparent border-success my-3">
+                <div class="card-body">
+                    <table class="table table-striped text-center">
+                        <thead>
+                        <tr>
+                            <th scope="col">Sr. No.</th>
+                            <th scope="col">Vendor Name</th>
+                            <th scope="col">Product Name</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Total Price</th>
+                            <th scope="col">Date Created</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for stock in stock_list %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ stock.vendor }}</td>
+                                <td>{{ stock.products }}</td>
+                                <td>{{ stock.quantity }}</td>
+                                <td>{{ stock.total_price }}</td>
+                                <td>{{ stock.date }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    {% else %}
+        <p class="text-center">No Stock are available.</p>
+    {% endif %}
+
+{% endblock content %}
