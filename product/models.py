@@ -1,9 +1,17 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 
 CHOICE = (
         ('Available', 'Available'),         # ('Actual Value', 'Human Readable Name')
         ('Not Available', 'Not Available')      # ('Actual Value', 'Human Readable Name')
     )
+
+
+def validate_negative_value(value):  # creating a validator function for negative values
+    if value <= 0:
+        raise ValidationError('Enter positive value')
+    else:
+        return value
 
 
 class Brand(models.Model):
@@ -30,8 +38,8 @@ class Products(models.Model):
     name = models.CharField(max_length=200)
     description = models.CharField(max_length=200, null=True)
     code = models.CharField(max_length=100)
-    quantity = models.IntegerField(null=True, blank=True)
-    price = models.FloatField()
+    quantity = models.IntegerField(default=0, blank=True, validators=[validate_negative_value])
+    price = models.IntegerField(default=0, validators=[validate_negative_value])
     count_sold = models.IntegerField(null=True, blank=True)
     status = models.CharField(max_length=50, choices=CHOICE, default='Not Available')
     image = models.ImageField(upload_to="images/")

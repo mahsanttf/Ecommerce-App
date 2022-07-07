@@ -1,24 +1,51 @@
 {% extends "home.html" %}
 {% block content %}
-    <h1 class="text-center my-3">Vendors</h1>
+    <h1 class="text-center my-4">Vendors</h1>
 
     {% if vendor_list %}
         <div class="container">
-            <div class="row">
-                {% for x in vendor_list %}
-                    <div class="col-3">
-                        <div class="card bg-light mb-3" style="max-width: 18rem;">
-                            <div class="card-header"><strong>Name: </strong>{{ x.name }}</div>
-                            <div class="card-body">
-                                <h6 class="card-title"><strong>Contact No. </strong>{{ x.phone_number }}</h6>
-                                <p class="card-text"><strong>Address: </strong>{{ x.address }}</p>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
+            <div class="card bg-transparent border-success my-3">
+                <div class="card-body">
+                    <table class="table table-striped text-center">
+                        <thead>
+                        <tr>
+                            <th scope="col">Sr. No.</th>
+                            <th scope="col">Vendor Name</th>
+                            <th scope="col">Contact No.</th>
+                            <th scope="col">Vendor Address</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for vendor in vendor_list %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ vendor.name }}</td>
+                                <td>{{ vendor.phone_number }}</td>
+                                <td>{{ vendor.address }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
+
+        {#        <div class="container">#}
+        {#            <div class="row">#}
+        {#                {% for x in vendor_list %}#}
+        {#                    <div class="col-3">#}
+        {#                        <div class="card bg-light mb-3" style="max-width: 18rem;">#}
+        {#                            <div class="card-header"><strong>Name: </strong>{{ x.name }}</div>#}
+        {#                            <div class="card-body">#}
+        {#                                <h6 class="card-title"><strong>Contact No. </strong>{{ x.phone_number }}</h6>#}
+        {#                                <p class="card-text"><strong>Address: </strong>{{ x.address }}</p>#}
+        {#                            </div>#}
+        {#                        </div>#}
+        {#                    </div>#}
+        {#                {% endfor %}#}
+        {#            </div>#}
+        {#        </div>#}
     {% else %}
-        <p>No Vendors are available.</p>
+        <p class="text-center">No Vendors are available.</p>
     {% endif %}
 {% endblock content %}

@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'order.apps.OrderConfig',
     'crispy_forms',
     'crispy_bootstrap5',
+    'fontawesomefree',
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
@@ -120,7 +121,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Karachi'
 
 USE_I18N = True
 

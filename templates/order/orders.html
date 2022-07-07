@@ -1,0 +1,53 @@
+{% extends "home.html" %}
+{% block content %}
+    <h1 class="text-center my-4">Orders List</h1>
+
+    {% if orders_list %}
+        <div class="container">
+            <div class="card bg-transparent border-success my-3">
+                <div class="card-body">
+                    <table class="table table-striped text-center">
+                        <thead>
+                        <tr>
+                            <th scope="col">Sr. No.</th>
+                            <th scope="col">ID</th>
+                            <th scope="col">Order Name <a href="?order_by=name&direction=asc"><i
+                                    class="fa-solid fa-arrow-up up"></i></a><a href="?order_by=name&direction=desc"><i
+                                    class="fa-solid fa-arrow-down down"></i></a></th>
+                            <th scope="col">Order Status <a href="?order_by=status&direction=asc"><i
+                                    class="fa-solid fa-arrow-up up"></i></a><a href="?order_by=status&direction=desc"><i
+                                    class="fa-solid fa-arrow-down down"></i></a></th>
+                            <th scope="col">Total <a href="?order_by=total&direction=asc"><i
+                                    class="fa-solid fa-arrow-up up"></i></a><a href="?order_by=total&direction=desc"><i
+                                    class="fa-solid fa-arrow-down down"></i></a></th>
+                            <th scope="col">Date Created <a href="?order_by=date_created&direction=asc"><i
+                                    class="fa-solid fa-arrow-up up"></i></a><a href="?order_by=date_created&direction=desc"><i
+                                    class="fa-solid fa-arrow-down down"></i></a></th>
+{#                            <th scope="col">Date Modified <a href="?order_by=date_modified&direction=asc"><i#}
+{#                                    class="fa-solid fa-arrow-up up"></i></a><a href="?order_by=date_modified&direction=desc"><i#}
+{#                                    class="fa-solid fa-arrow-down down"></i></a></th>#}
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for order in orders_list %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ order.id }}</td>
+                                <td><a href="{% url 'order:order_detail' order.id %}">{{ order.name }}</a></td>
+                                <td>{{ order.status }}</td>
+                                <td>{{ order.total }}</td>
+                                <td>{{ order.date_created }}</td>
+{#                                <td>{{ order.date_modified }}</td>#}
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    {% else %}
+        <p class="text-center">No Orders are available.</p>
+    {% endif %}
+
+{% endblock content %}

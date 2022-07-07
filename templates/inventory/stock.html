@@ -1,7 +1,7 @@
 {% extends "home.html" %}
 {% block content %}
 
-    <h1 class="text-center my-5">Stock History</h1>
+    <h1 class="text-center my-4">Stock History</h1>
 
     {% if stock_list %}
         <div class="container">
@@ -11,11 +11,23 @@
                         <thead>
                         <tr>
                             <th scope="col">Sr. No.</th>
-                            <th scope="col">Vendor Name</th>
-                            <th scope="col">Product Name</th>
-                            <th scope="col">Quantity</th>
-                            <th scope="col">Total Price</th>
-                            <th scope="col">Date Created</th>
+                            <th scope="col">Vendor Name <a href="?order_by=vendor&direction=asc"><i
+                                    class="fa-solid fa-arrow-up up"></i></a><a href="?order_by=vendor&direction=desc"><i
+                                    class="fa-solid fa-arrow-down down"></i></a></th>
+                            <th scope="col">Product Name <a href="?order_by=products&direction=asc"><i
+                                    class="fa-solid fa-arrow-up up"></i></a><a href="?order_by=products&direction=desc"><i
+                                    class="fa-solid fa-arrow-down down"></i></a></th>
+                            <th scope="col">Quantity <a href="?order_by=quantity&direction=asc"><i
+                                    class="fa-solid fa-arrow-up up"></i></a><a href="?order_by=quantity&direction=desc"><i
+                                    class="fa-solid fa-arrow-down down"></i></a></th>
+                            <th scope="col">Total Price <a href="?order_by=total_price&direction=asc"><i
+                                    class="fa-solid fa-arrow-up up"></i></a><a
+                                    href="?order_by=total_price&direction=desc"><i
+                                    class="fa-solid fa-arrow-down down"></i></a></th>
+                            <th scope="col">Date Created <a href="?order_by=date&direction=asc"><i
+                                    class="fa-solid fa-arrow-up up"></i></a><a
+                                    href="?order_by=date&direction=desc"><i
+                                    class="fa-solid fa-arrow-down down"></i></a>
                         </tr>
                         </thead>
                         <tbody>

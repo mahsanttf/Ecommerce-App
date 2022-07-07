@@ -1,0 +1,31 @@
+{% extends "home.html" %}
+{% block content %}
+
+    <h1 class="text-center my-3">Order Details</h1>
+
+    {% if orders %}
+        <div class="container">
+            <div class="row">
+                {% for ord in object.orderdetails_set.all %}
+                    <div class="col-3">
+                        <div class="card border-success my-3" style="width: 70rem; font-size: 2rem">
+                            <div class="card-header text-center">
+                                Order by: <strong>{{ orders.name }}</strong>
+                            </div>
+                            <ul class="list-group list-group-flush" style="font-size: 1.5rem">
+                                <li class="list-group-item">Product Name: <strong>{{ ord.product.name }}</strong></li>
+                                <li class="list-group-item">Order Quantity: <strong>{{ ord.quantity }}</strong></li>
+                                <li class="list-group-item">Product Price: <strong>{{ ord.product.price }}</strong></li>
+                                <li class="list-group-item">Total Price: <strong>{{ ord.product.total_price }}</strong></li>
+                                <li class="list-group-item">Discount Price: <strong>{{ ord.product.discount_price }}</strong></li>
+                                <li class="list-group-item">Final Price: <strong>{{ ord.product.final_price }}</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% else %}
+        <p class="text-center">No Orders are available.</p>
+    {% endif %}
+{% endblock content %}
