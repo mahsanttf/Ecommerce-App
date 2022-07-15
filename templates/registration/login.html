@@ -1,0 +1,19 @@
+{% extends "home.html" %}
+{% load crispy_forms_filters %}
+{% block content %}
+
+    <div class="container w-25 py-5">
+        <h1 class="text-warning">Sign In To Your Account</h1>
+        <form class="pt-4" method="post">
+            <table class="text-center">
+                {% csrf_token %}
+                {{ form|crispy }}
+            </table>
+            <input type="submit" value="SIGN IN" class=" btn border-warning text-warning text-decoration-none">
+        </form>
+        <p class="pt-4">If you are not registered, Please <a class="text-warning text-decoration-none" href="{% url 'product:signup' %}">Signup</a> here.</p>
+    </div>
+
+        {#    <p><a href="{% url 'password_reset' %}">Forget Password?</a></p>#}
+
+{% endblock content %}

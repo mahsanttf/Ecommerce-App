@@ -18,6 +18,9 @@ class Orders(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        ordering = ['-date_created']
+
 
 class OrderDetails(models.Model):
     order = models.ForeignKey(Orders, on_delete=models.CASCADE)

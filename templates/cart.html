@@ -1,0 +1,65 @@
+{% extends "home.html" %}
+{% block content %}
+    <h1 class="text-center text-warning bg-light">SHOPPING CART</h1>
+    {% if request.session.cart.items %}
+        <div class="container">
+            <table class="table table-borderless">
+                {% if request.session.cart.items %}
+                    {% for key,value in request.session.cart.items %}
+                        <tr style="border-width: 0 0 1px 0; line-height: 100px">
+                            {#                    <td>{{ forloop.counter }}</td>#}
+                            <td><img src="{{ value.image }}" height="100px"></td>
+                            <td>{{ value.name }}</td>
+                            {#                        <td>{{ value.price }}</td>#}
+                            <td><a href="{% url 'product:item_decrement' value.product_id %}"><i
+                                    class="fa-solid fa-circle-minus text-warning"></i></a>
+                                {{ value.quantity }}
+                                <a href="{% url 'product:item_increment' value.product_id %}"><i
+                                        class="fa-solid fa-circle-plus text-warning"></i></a></td>
+                            <td>Rs. {% widthratio value.price 1 value.quantity %}</td>
+                            <td><a class=" btn text-danger text-decoration-none"
+                                   href="{% url 'product:item_clear' value.product_id %}">Delete Item</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    </table>
+                    <p class="text-center" style="font-size: 50px">Total Bill: {{ cart_total.total_price }} /-</p>
+                    <a class=" btn btn-outline-secondary fs-6"
+                       href="{% url 'product:product_list' %}">Continue Shopping</a>
+                    <a class=" btn btn-outline-warning" style="margin-left: 23rem"
+                       href="{% url 'product:cart_clear' %}">Clear Cart</a>
+                    {% if user.is_authenticated %}
+                        <a class=" btn btn-outline-success ms-2"
+                           href="{% url 'product:check_out' %}">Check Out</a>
+                    {% else %}
+                        <button class=" btn btn-outline-success ms-2"
+                                data-bs-toggle="modal"
+                                data-bs-target="#exampleModal"
+                        >Check Out
+                        </button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                             aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <strong>Please login to CHECK OUT!</strong>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">
+                                            Close
+                                        </button>
+                                        <a href="{% url 'login' %}" class="btn btn-outline-warning">Login</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endif %}
+        </div>
+    {% else %}
+        <p class="text-center pt-4">No items in cart <a class="text-warning text-decoration-none mx-1"
+                                                        href="{% url 'product:product_list' %}">Add Items</a></p>
+    {% endif %}
+{% endblock content %}

@@ -1,0 +1,16 @@
+{% extends "home.html" %}
+{% load crispy_forms_filters %}
+{% block content %}
+
+    <div class="container w-25 py-3">
+        <h1 class="text-warning">Sign Up</h1>
+        <form class="pt-4" method="post">
+            <table class="text-center">
+                {% csrf_token %}
+                {{ form|crispy }}
+            </table>
+            <input type="submit" value="SIGN UP" class=" btn border-warning text-warning text-decoration-none">
+        </form>
+    </div>
+
+{% endblock content %}

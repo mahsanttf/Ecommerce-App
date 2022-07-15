@@ -1,28 +1,40 @@
 {% extends "home.html" %}
 {% block content %}
 
-    <h1 class="text-center my-3">Order Details</h1>
+    <h1 class="text-center my-3">Order Details of {{ orders.name }}</h1>
 
     {% if orders %}
         <div class="container">
-            <div class="row">
-                {% for ord in object.orderdetails_set.all %}
-                    <div class="col-3">
-                        <div class="card border-success my-3" style="width: 70rem; font-size: 2rem">
-                            <div class="card-header text-center">
-                                Order by: <strong>{{ orders.name }}</strong>
-                            </div>
-                            <ul class="list-group list-group-flush" style="font-size: 1.5rem">
-                                <li class="list-group-item">Product Name: <strong>{{ ord.product.name }}</strong></li>
-                                <li class="list-group-item">Order Quantity: <strong>{{ ord.quantity }}</strong></li>
-                                <li class="list-group-item">Product Price: <strong>{{ ord.product.price }}</strong></li>
-                                <li class="list-group-item">Total Price: <strong>{{ ord.product.total_price }}</strong></li>
-                                <li class="list-group-item">Discount Price: <strong>{{ ord.product.discount_price }}</strong></li>
-                                <li class="list-group-item">Final Price: <strong>{{ ord.product.final_price }}</strong></li>
-                            </ul>
-                        </div>
-                    </div>
-                {% endfor %}
+            <div class="card bg-transparent border-success my-3">
+                <div class="card-body">
+                    <table class="table table-striped text-center">
+                        <thead>
+                        <tr>
+                            <th scope="col">Sr. No.</th>
+                            <th scope="col">Product Name</th>
+                            <th scope="col">Order Quantity</th>
+                            <th scope="col">Product Price</th>
+                            <th scope="col">Total Price</th>
+                            <th scope="col">Discount Price</th>
+                            <th scope="col">Final Price</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for ord in object.orderdetails_set.all %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ ord.product.name }}</td>
+                                <td>{{ ord.quantity }}</td>
+                                <td>{{ ord.product.price }}</td>
+                                <td>{{ ord.total_price }}</td>
+                                <td>{{ ord.discount_price }}</td>
+                                <td>{{ ord.final_price }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                <h6 style="text-align: center">Total Bill: {{ orders.total }}</h6>
+                </div>
             </div>
         </div>
     {% else %}

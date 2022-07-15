@@ -40,7 +40,7 @@ class Products(models.Model):
     code = models.CharField(max_length=100)
     quantity = models.IntegerField(default=0, blank=True, validators=[validate_negative_value])
     price = models.IntegerField(default=0, validators=[validate_negative_value])
-    count_sold = models.IntegerField(null=True, blank=True)
+    count_sold = models.IntegerField(default=0, blank=True)
     status = models.CharField(max_length=50, choices=CHOICE, default='Not Available')
     image = models.ImageField(upload_to="images/")
 

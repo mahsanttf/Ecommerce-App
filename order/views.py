@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.views import generic
 from .models import Orders, OrderDetails
-
+from product.Cart import Cart
 
 class OrderListView(generic.ListView):
     model = Orders

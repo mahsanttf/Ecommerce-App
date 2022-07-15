@@ -10,14 +10,13 @@
                         <thead>
                         <tr>
                             <th scope="col">Sr. No.</th>
-                            <th scope="col">ID</th>
                             <th scope="col">Order Name <a href="?order_by=name&direction=asc"><i
                                     class="fa-solid fa-arrow-up up"></i></a><a href="?order_by=name&direction=desc"><i
                                     class="fa-solid fa-arrow-down down"></i></a></th>
                             <th scope="col">Order Status <a href="?order_by=status&direction=asc"><i
                                     class="fa-solid fa-arrow-up up"></i></a><a href="?order_by=status&direction=desc"><i
                                     class="fa-solid fa-arrow-down down"></i></a></th>
-                            <th scope="col">Total <a href="?order_by=total&direction=asc"><i
+                            <th scope="col">Total Price <a href="?order_by=total&direction=asc"><i
                                     class="fa-solid fa-arrow-up up"></i></a><a href="?order_by=total&direction=desc"><i
                                     class="fa-solid fa-arrow-down down"></i></a></th>
                             <th scope="col">Date Created <a href="?order_by=date_created&direction=asc"><i
@@ -32,7 +31,6 @@
                         {% for order in orders_list %}
                             <tr>
                                 <td>{{ forloop.counter }}</td>
-                                <td>{{ order.id }}</td>
                                 <td><a href="{% url 'order:order_detail' order.id %}">{{ order.name }}</a></td>
                                 <td>{{ order.status }}</td>
                                 <td>{{ order.total }}</td>

@@ -1,0 +1,116 @@
+{% extends "home.html" %}
+{% block content %}
+
+
+    {% if products_list %}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-8">
+                    <h1 class="text-center my-4">All Products</h1>
+                    <div class="card shadow my-2" style="height: 82.7vh">
+                        <div class="card-body">
+                            <table class="table table-striped text-center">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Sr. No.</th>
+                                    <th scope="col">Product Image</th>
+                                    <th scope="col">Product Name <a href="?order_by=name&direction=asc"><i
+                                            class="fa-solid fa-arrow-up up"></i></a><a
+                                            href="?order_by=name&direction=desc"><i
+                                            class="fa-solid fa-arrow-down down"></i></a></th>
+                                    <th scope="col">Brand <a href="?order_by=brand&direction=asc"><i
+                                            class="fa-solid fa-arrow-up up"></i></a><a
+                                            href="?order_by=brand&direction=desc"><i
+                                            class="fa-solid fa-arrow-down down"></i></a></th>
+                                    <th scope="col">Category <a href="?order_by=category&direction=asc"><i
+                                            class="fa-solid fa-arrow-up up"></i></a><a
+                                            href="?order_by=category&direction=desc"><i
+                                            class="fa-solid fa-arrow-down down"></i></a></th>
+                                    <th scope="col">Product Code <a href="?order_by=code&direction=asc"><i
+                                            class="fa-solid fa-arrow-up up"></i></a><a
+                                            href="?order_by=code&direction=desc"><i
+                                            class="fa-solid fa-arrow-down down"></i></a></th>
+                                    <th scope="col">Unit Price <a href="?order_by=price&direction=asc"><i
+                                            class="fa-solid fa-arrow-up up"></i></a><a
+                                            href="?order_by=price&direction=desc"><i
+                                            class="fa-solid fa-arrow-down down"></i></a></th>
+                                    <th scope="col">Availabe Qty <a href="?order_by=quantity&direction=asc"><i
+                                            class="fa-solid fa-arrow-up up"></i></a><a
+                                            href="?order_by=quantity&direction=desc"><i
+                                            class="fa-solid fa-arrow-down down"></i></a></th>
+                                    <th scope="col">Shop <i class="fa-solid fa-cart-shopping"></i></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for product in products_list %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td><img height="35px" src="{{ product.image.url }}"></td>
+                                        <td>{{ product.name }}</td>
+                                        <td>{{ product.brand }}</td>
+                                        <td>{{ product.category }}</td>
+                                        <td>{{ product.code }}</td>
+                                        <td>{{ product.price }}</td>
+                                        <td>{{ product.quantity }}</td>
+                                        {% if product.quantity > 1 %}
+                                            <td><a class=" btn border-success text-success text-decoration-none"
+                                                   href="{% url 'product:cart_add' product.id %}">Add to Cart</a></td>
+                                        {% else %}
+                                            <td></td>
+                                        {% endif %}
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="card shadow mt-3" style="height: 90vh">
+                        <div class="card-body">
+                            <h1 class="card-title text-center">Cart Detail</h1>
+                            <table class="table text-center">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Sr.#</th>
+                                    <th scope="col">Product Name</th>
+                                    <th scope="col">Unit Price</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Total Price</th>
+                                    <th scope="col"><i class="fa-solid fa-trash-can"></i></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% if request.session.cart.items %}
+                                    {% for key,value in request.session.cart.items %}
+                                        <tr>
+                                            <td>{{ forloop.counter }}</td>
+                                            <td>{{ value.name }}</td>
+                                            <td>{{ value.price }}</td>
+                                            <td><a href="{% url 'product:item_decrement' value.product_id %}"><i
+                                                    class="fa-solid fa-minus up"></i></a> {{ value.quantity }} <a
+                                                    href="{% url 'product:item_increment' value.product_id %}"><i
+                                                    class="fa-solid fa-plus up"></i></a></td>
+                                            <td>{% widthratio value.price 1 value.quantity %}</td>
+                                            <td><a class=" btn border-danger text-danger text-decoration-none"
+                                                   href="{% url 'product:item_clear' value.product_id %}">Delete</a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                    </table>
+                                    <p>Total Bill: {{ cart_total.total_price }} /-</p>
+                                    <a class=" btn border-warning text-warning text-decoration-none"
+                                       href="{% url 'product:cart_clear' %}">Clear Cart</a>
+
+                                {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <p class="text-center">No Products are available.</p>
+    {% endif %}
+
+{% endblock content %}

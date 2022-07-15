@@ -1,4 +1,7 @@
+from django.db import transaction
+
 from product.models import Products
+from order.models import Orders, OrderDetails
 
 
 class Cart(object):
@@ -11,6 +14,7 @@ class Cart(object):
             cart = self.request.session['cart'] = {}
         self.cart = cart
 
+    # Dictionary items are ordered, changeable, and does not allow duplicates.
     def add(self, product):
         """
             Add a product to the cart or update its quantity.
@@ -21,11 +25,21 @@ class Cart(object):
                 'name': product.name,
                 'quantity': 1,
                 'price': product.price,
+                'image': product.image.url if product.image else '',
             }
         else:
-            self.cart[product.id]['quantity'] += 1
-        self.cart[product.id]['total_price'] = self.cart[product.id]['quantity'] * product.price
+            for key, value in self.cart.items():
+                if key == str(product.id):
+                    if value['quantity'] < product.quantity:
+                        value['quantity'] += 1
+                        self.save()
+                        break
+            # self.cart[product.id]['quantity'] += 1  # Not working logical error
+        # self.cart[product.id]['total_price'] = self.cart[product.id]['quantity'] * [product.price]
         self.save()
+
+    def session_save(self):
+        pass;
 
     def save(self):
         # update the session cart
@@ -43,11 +57,18 @@ class Cart(object):
             self.save()
 
     def decrement(self, product):
-        try:
-            self.cart[product.id]['quantity'] -= 1
-            self.cart[product.id]['total_price'] = self.cart[product.id]['quantity'] * product.price
-        except KeyError:
-            pass
+        for key, value in self.cart.items():
+            if key == str(product.id):
+                value['quantity'] -= 1
+                if(value['quantity'] < 1):
+                    del self.cart[key]
+                self.save()
+                break
+        # try:
+        #     self.cart[product.id]['quantity'] -= 1  # Gives error
+        #     self.cart[product.id]['total_price'] = self.cart[product.id]['quantity'] * product.price
+        # except KeyError:
+        #     pass
 
     def clear(self):
         # empty cart
@@ -62,5 +83,25 @@ class Cart(object):
             total_items += product['quantity']
         return {
             'total_items': total_items,
-            'total_price': total_price
+            'total_price': total_price,
         }
+
+    def save_to_database(self):
+        prices = self.get_total()
+        order = Orders(name="Custom order", status="Approved", total=prices['total_price'])
+        order.save()
+        for id, item_detail in self.cart.items():
+            product = Products.objects.get(id=id)
+            order_detail = OrderDetails()
+            order_detail.order = order
+            order_detail.product = product
+            order_detail.price_each = product.price
+            order_detail.quantity = item_detail['quantity']
+            product.quantity -= item_detail['quantity']
+            product.count_sold += item_detail['quantity']
+            order_detail.total_price = product.price * item_detail['quantity']
+            order_detail.discount_price = 0
+            order_detail.final_price = order_detail.total_price - order_detail.discount_price
+            order_detail.save()
+            product.save()
+        self.clear()
