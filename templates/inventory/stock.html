@@ -1,6 +1,6 @@
 {% extends "home.html" %}
 {% block content %}
-
+<div style="margin-top: 90px">
     <h1 class="text-center my-4">Stock History</h1>
 
     {% if stock_list %}
@@ -50,5 +50,5 @@
     {% else %}
         <p class="text-center">No Stock are available.</p>
     {% endif %}
-
+</div>
 {% endblock content %}

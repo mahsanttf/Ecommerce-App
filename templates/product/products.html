@@ -1,8 +1,12 @@
 {% extends "home.html" %}
 {% block content %}
     {% load static %}
-    <img class="mx-0" src="{% static 'product/saih.jpg' %}" alt="Shopping Image" width="100%">
-    <h1 class="my-2" style="text-align: center">PRODUCTS</h1>
+    {% if user.is_staff %}
+        <h1 class="my-2 text-warning" style="text-align: center">LOOK & TAKE</h1>
+    {% else %}
+        <img src="{% static 'product/saih.jpg' %}" alt="Shopping Image" width="100%">
+        <h1 class="my-2" style="text-align: center">PRODUCTS</h1>
+    {% endif %}
     {% if products_list %}
         <div class="container">
             <div class="row mx-2">
@@ -16,13 +20,23 @@
                                 <p class="card-text my-1">{{ product.brand }}</p>
                                 <h5 class="card-title my-1" style="font-size: .8rem">{{ product.name }}</h5>
                                 <p class="card-text my-1">Rs. {{ product.price }}</p>
-                                <p class="card-text my-1">Aval. Qty. {{ product.quantity }}</p>
-                                <p class="card-text my-1">Total Sold: {{ product.count_sold }}</p>
-                                {% if product.quantity > 1 %}
-                                    <a href="{% url 'product:cart_add' product.id %}"
-                                       class="btn btn-warning text-light">Add to Cart</a>
+                                {% if user.is_staff %}
+                                    <p class="card-text my-1">Aval. Qty. {{ product.quantity }}</p>
+                                    <p class="card-text my-1">Total Sold: {{ product.count_sold }}</p>
+                                    {% if product.quantity >= 5 %}
+                                        <a href="{% url 'inventory:stock_create' %}"
+                                           class="btn btn-success text-light">Add Stock</a>
+                                    {% else %}
+                                        <a href="{% url 'inventory:stock_create' %}"
+                                           class="btn btn-danger text-light">Add Stock</a>
+                                    {% endif %}
                                 {% else %}
-                                    <span class="btn btn-danger">Out of Stock</span>
+                                    {% if product.quantity >= 1 %}
+                                        <a href="{% url 'product:cart_add' product.id %}"
+                                           class="btn btn-warning text-light">Add to Cart</a>
+                                    {% else %}
+                                        <span class="btn btn-danger">Out of Stock</span>
+                                    {% endif %}
                                 {% endif %}
                             </div>
                         </div>

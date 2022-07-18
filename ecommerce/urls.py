@@ -19,6 +19,10 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
 
+admin.site.site_header = "Look & Take Administration"
+admin.site.site_title = "Look & Take"
+admin.site.index_title = "Welcome to Look & Take Portal"
+
 urlpatterns = [
                   path('admin/', admin.site.urls),
                   path('accounts/', include('django.contrib.auth.urls')),

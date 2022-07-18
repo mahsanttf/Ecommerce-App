@@ -16,7 +16,6 @@ def validate_negative_value(value):  # creating a validator function for negativ
 
 class Brand(models.Model):
     name = models.CharField(max_length=255)
-    # description = models.CharField(max_length=200)
     status = models.CharField(max_length=50, choices=CHOICE, default='Not Available')
 
     def __str__(self):
@@ -25,7 +24,6 @@ class Brand(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=255)
-    # description = models.CharField(max_length=200)
     status = models.CharField(max_length=50, choices=CHOICE, default='Not Available')
 
     def __str__(self):
@@ -39,8 +37,8 @@ class Products(models.Model):
     description = models.CharField(max_length=200, null=True)
     code = models.CharField(max_length=100)
     quantity = models.IntegerField(default=0, blank=True, validators=[validate_negative_value])
-    price = models.IntegerField(default=0, validators=[validate_negative_value])
-    count_sold = models.IntegerField(default=0, blank=True)
+    price = models.PositiveIntegerField()
+    count_sold = models.PositiveIntegerField(default=0, blank=True)
     status = models.CharField(max_length=50, choices=CHOICE, default='Not Available')
     image = models.ImageField(upload_to="images/")
 

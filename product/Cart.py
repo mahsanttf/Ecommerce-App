@@ -1,4 +1,5 @@
 from django.db import transaction
+from django.contrib.auth.models import User
 
 from product.models import Products
 from order.models import Orders, OrderDetails
@@ -38,8 +39,6 @@ class Cart(object):
         # self.cart[product.id]['total_price'] = self.cart[product.id]['quantity'] * [product.price]
         self.save()
 
-    def session_save(self):
-        pass;
 
     def save(self):
         # update the session cart
@@ -86,13 +85,16 @@ class Cart(object):
             'total_price': total_price,
         }
 
+    @transaction.atomic()
     def save_to_database(self):
         prices = self.get_total()
-        order = Orders(name="Custom order", status="Approved", total=prices['total_price'])
+        order = Orders(status="Approved", total=prices['total_price'])
         order.save()
         for id, item_detail in self.cart.items():
             product = Products.objects.get(id=id)
             order_detail = OrderDetails()
+            order_detail.user_id = self.request.user.id
+            order.name = self.request.user.username
             order_detail.order = order
             order_detail.product = product
             order_detail.price_each = product.price
@@ -102,6 +104,7 @@ class Cart(object):
             order_detail.total_price = product.price * item_detail['quantity']
             order_detail.discount_price = 0
             order_detail.final_price = order_detail.total_price - order_detail.discount_price
+            order.save()
             order_detail.save()
             product.save()
         self.clear()

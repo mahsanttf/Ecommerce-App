@@ -1,5 +1,6 @@
 {% extends "home.html" %}
 {% block content %}
+    <div style="margin-top: 90px">
     <h1 class="text-center my-4">Vendors</h1>
 
     {% if vendor_list %}
@@ -48,4 +49,5 @@
     {% else %}
         <p class="text-center">No Vendors are available.</p>
     {% endif %}
+    </div>
 {% endblock content %}

@@ -28,7 +28,7 @@
         }
 
         .main {
-            margin-top: 60px; /* Same as the width of the sidenav */
+            margin-top: 56px; /* Same as the width of the sidenav */
         {#font-size: 20px; /* Increased text to enable scrolling */#}{#padding: 10px 10px;#}
         }
     </style>
@@ -58,43 +58,55 @@
                         <li><a class="dropdown-item" href="{% url 'product:brand_list' %}">Brands</a></li>
                         <li><a class="dropdown-item" href="{% url 'product:category_list' %}">Category</a></li>
                         <li><a class="dropdown-item" href="{% url 'product:product_list' %}">Products</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" href="{% url 'product:brand_create' %}">Add Brand</a></li>
-                        <li><a class="dropdown-item" href="{% url 'product:category_create' %}">Add Category</a></li>
-                        <li><a class="dropdown-item" href="{% url 'product:product_create' %}">Add Product</a></li>
+                        {% if user.is_staff %}
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="{% url 'product:brand_create' %}">Add Brand</a></li>
+                            <li><a class="dropdown-item" href="{% url 'product:category_create' %}">Add Category</a>
+                            </li>
+                            <li><a class="dropdown-item" href="{% url 'product:product_create' %}">Add Product</a></li>
+                        {% endif %}
                     </ul>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button"
-                       data-bs-toggle="dropdown" aria-expanded="false">
-                        Inventory
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="{% url 'inventory:vendor_list' %}">Vendor</a></li>
-                        <li><a class="dropdown-item" href="{% url 'inventory:stock_list' %}">Stock</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" href="{% url 'inventory:vendor_create' %}">Add Vendor</a></li>
-                        <li><a class="dropdown-item" href="{% url 'inventory:stock_create' %}">Add Stock</a></li>
-                    </ul>
-                </li>
+                {% if user.is_staff %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            Inventory
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="{% url 'inventory:vendor_list' %}">Vendor</a></li>
+                            <li><a class="dropdown-item" href="{% url 'inventory:stock_list' %}">Stock</a></li>
+                            {% if user.is_staff %}
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item" href="{% url 'inventory:vendor_create' %}">Add Vendor</a>
+                                </li>
+                                <li><a class="dropdown-item" href="{% url 'inventory:stock_create' %}">Add Stock</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </li>
+                {% endif %}
                 <li class="nav-item">
                     <a class="nav-link active" href="{% url 'order:order_list' %}">Orders List</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link active position-relative" href="{% url 'product:cart_view' %}">
-                        <i class="fa-solid fa-cart-shopping"></i> Cart
-                        {% if request.session.cart.items %}
-                            <span
-                                    class="position-absolute top-1 start-100 translate-middle badge rounded-pill bg-danger">
+                {% if user.is_staff %}
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link active position-relative" href="{% url 'product:cart_view' %}">
+                            <i class="fa-solid fa-cart-shopping"></i> Cart
+                            {% if request.session.cart.items %}
+                                <span
+                                        class="position-absolute top-1 start-100 translate-middle badge rounded-pill bg-danger">
                             {{ request.session.cart.items|length }}<span
-                                    class="visually-hidden">unread messages</span></span>
-                        {% endif %}
-                    </a>
-                </li>
+                                        class="visually-hidden">unread messages</span></span>
+                            {% endif %}
+                        </a>
+                    </li>
+                {% endif %}
                 <li class="nav-item dropdown">
 
                     <a class="nav-link dropdown-toggle active mx-2" href="#" id="navbarDropdown" role="button"
@@ -115,10 +127,10 @@
                     </ul>
                 </li>
             </ul>
-            {#            <form class="d-flex">#}
-            {#                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">#}
-            {#                <button class="btn btn-outline-success" type="submit">Search</button>#}
-            {#            </form>#}
+            <form class="d-flex" method="GET">
+                <input class="form-control me-2" type="search" name="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-light" type="submit">Search</button>
+            </form>
         </div>
     </div>
 </nav>

@@ -10,19 +10,19 @@ class Vendor(models.Model):
     def __str__(self):
         return self.name
 
-    # class Meta:
-    #     ordering = ['name']
+    class Meta:
+        ordering = ['name']
 
 
 class Stock(models.Model):
     vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE, related_name='vendor')
     products = models.ForeignKey(Products, on_delete=models.CASCADE, related_name='products')
-    quantity = models.IntegerField(validators=[validate_negative_value])
-    total_price = models.IntegerField(validators=[validate_negative_value])
+    quantity = models.PositiveIntegerField()
+    total_price = models.PositiveIntegerField(blank=True)
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return str(self.vendor)
 
-    # class Meta:
-    #     ordering = ['-date']
+    class Meta:
+        ordering = ['-date']

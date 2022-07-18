@@ -1,6 +1,7 @@
+from django.contrib.auth.models import User
 from django.db import models
 
-from product.models import Products, validate_negative_value
+from product.models import Products
 
 CHOICE = (
         ('Approved', 'Approved'),          # ('Actual Value', 'Human Readable Name')
@@ -10,8 +11,8 @@ CHOICE = (
 
 class Orders(models.Model):
     name = models.CharField(max_length=100)
-    status = models.CharField(max_length=50, choices=CHOICE, default='Approved')
-    total = models.IntegerField(null=True, blank=True)
+    status = models.CharField(max_length=50, choices=CHOICE, default='Not Approved')
+    total = models.PositiveIntegerField()
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now_add=True)
 
@@ -24,13 +25,14 @@ class Orders(models.Model):
 
 class OrderDetails(models.Model):
     order = models.ForeignKey(Orders, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name='product')
-    quantity = models.IntegerField(validators=[validate_negative_value])
-    price_each = models.IntegerField(null=True, blank=True)
-    total_price = models.IntegerField()
-    discount_price = models.IntegerField()
-    final_price = models.IntegerField()
+    quantity = models.PositiveIntegerField()
+    price_each = models.PositiveIntegerField()
+    total_price = models.PositiveIntegerField()
+    discount_price = models.PositiveIntegerField()
+    final_price = models.PositiveIntegerField()
 
     def __str__(self):
-        return str(self.order_id)
+        return str(self.user_id)
 

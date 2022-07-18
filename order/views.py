@@ -1,8 +1,10 @@
+from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.views import generic
 from .models import Orders, OrderDetails
 from product.Cart import Cart
+
 
 class OrderListView(generic.ListView):
     model = Orders
@@ -37,6 +39,16 @@ class OrderCreateView(generic.CreateView):
 class OrderDetailView(generic.DetailView):
     model = Orders
     template_name = 'order/orderdetails.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        obj = get_object_or_404(Orders, pk=self.kwargs['pk'])
+        if self.request.user.is_staff:
+            return super().dispatch(request, *args, **kwargs)
+        else:
+            if self.request.user.username == obj.name:
+                return super().dispatch(request, *args, **kwargs)
+            else:
+                raise Http404
 
     # def get_context_data(self, **kwargs):
     #     context = super(OrderDetailView, self).get_context_data(**kwargs)

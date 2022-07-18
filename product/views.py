@@ -1,3 +1,5 @@
+from django.db.models import Q
+from django.http import request
 from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.views import generic
@@ -40,20 +42,25 @@ class ProductListView(generic.ListView):
     model = Products
     template_name = 'product/products.html'
 
-    def get_queryset(self):  # Code for Asce and Desc sorting of data
+    def get_queryset(self):
         super(ProductListView, self).get_queryset()
-        order_by = self.request.GET.get('order_by')
-        direction = self.request.GET.get('direction')
-        if direction:
-            if direction == 'asc':
-                ordering = '{}'.format(order_by)
-                product = Products.objects.all().order_by(ordering)
-            else:
-                ordering = '-{}'.format(order_by)
-                product = Products.objects.all().order_by(ordering)
-        else:
-            product = Products.objects.all()
+        labo = self.request.GET.get('search')
+        product = Products.objects.all()
+        if labo:
+            product = product.filter(
+                Q(name__icontains=labo) | Q(brand__name__icontains=labo) | Q(category__name__icontains=labo))
         return product
+
+        # order_by = self.request.GET.get('order_by')
+        # direction = self.request.GET.get('direction')
+        # product = Products.objects.all()
+        # if direction:
+        #     if direction == 'asc':
+        #         ordering = '{}'.format(order_by)
+        #     else:
+        #         ordering = '-{}'.format(order_by)
+        #     product = product.order_by(ordering)
+        # return product
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(object_list=object_list, **kwargs)
@@ -112,7 +119,6 @@ def check_out(request):
 
 
 class CartView(generic.TemplateView):
-
     template_name = 'cart.html'
 
     def get_context_data(self, *, object_list=None, **kwargs):

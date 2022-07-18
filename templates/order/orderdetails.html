@@ -1,7 +1,7 @@
 {% extends "home.html" %}
 {% block content %}
-
-    <h1 class="text-center my-3">Order Details of {{ orders.name }}</h1>
+<div style="margin-top: 90px">
+    <h1 class="text-center my-4">Order Details of {{ orders.name }}</h1>
 
     {% if orders %}
         <div class="container">
@@ -17,6 +17,7 @@
                             <th scope="col">Total Price</th>
                             <th scope="col">Discount Price</th>
                             <th scope="col">Final Price</th>
+                            <th scope="col">Created By</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -29,15 +30,19 @@
                                 <td>{{ ord.total_price }}</td>
                                 <td>{{ ord.discount_price }}</td>
                                 <td>{{ ord.final_price }}</td>
+                                <td>{{ ord.user }}</td>
                             </tr>
                         {% endfor %}
                         </tbody>
                     </table>
-                <h6 style="text-align: center">Total Bill: {{ orders.total }}</h6>
+                    <h6 style="text-align: center">Total Bill: {{ orders.total }}</h6>
                 </div>
             </div>
         </div>
     {% else %}
         <p class="text-center">No Orders are available.</p>
     {% endif %}
+
+</div>
+
 {% endblock content %}
