@@ -1,10 +1,19 @@
 {% extends "home.html" %}
+{#{% block head %}#}
+{#    <script>#}
+{#        $(document).ready(function () {#}
+{#            $("#detail").click(function () {#}
+{#                $("#cart").load("products.html");#}
+{#            });#}
+{#        });#}
+{#    </script>#}
+{#{% endblock head %}#}
 {% block content %}
     {% load static %}
     {% if user.is_staff %}
         <h1 class="my-2 text-warning" style="text-align: center">LOOK & TAKE</h1>
     {% else %}
-        <img src="{% static 'product/saih.jpg' %}" alt="Shopping Image" width="100%">
+        <img src="{% static 'product/saih.jpg' %}" alt="{{ name }}" width="100%">
         <h1 class="my-2" style="text-align: center">PRODUCTS</h1>
     {% endif %}
     {% if products_list %}
@@ -32,7 +41,7 @@
                                     {% endif %}
                                 {% else %}
                                     {% if product.quantity >= 1 %}
-                                        <a href="{% url 'product:cart_add' product.id %}"
+                                        <a id="detail" href="{% url 'product:cart_add' product.id %}"
                                            class="btn btn-warning text-light">Add to Cart</a>
                                     {% else %}
                                         <span class="btn btn-danger">Out of Stock</span>

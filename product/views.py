@@ -1,5 +1,5 @@
 from django.db.models import Q
-from django.http import request
+from django.http import request, JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.views import generic
@@ -51,17 +51,6 @@ class ProductListView(generic.ListView):
                 Q(name__icontains=labo) | Q(brand__name__icontains=labo) | Q(category__name__icontains=labo))
         return product
 
-        # order_by = self.request.GET.get('order_by')
-        # direction = self.request.GET.get('direction')
-        # product = Products.objects.all()
-        # if direction:
-        #     if direction == 'asc':
-        #         ordering = '{}'.format(order_by)
-        #     else:
-        #         ordering = '-{}'.format(order_by)
-        #     product = product.order_by(ordering)
-        # return product
-
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(object_list=object_list, **kwargs)
         context['cart_total'] = Cart(self.request).get_total()
@@ -82,6 +71,7 @@ def cart_add(request, id):
     cart = Cart(request)
     product = Products.objects.get(id=id)
     cart.add(product=product)
+    # return JsonResponse('')
     return redirect("product:product_list")
 
 
